@@ -12,28 +12,24 @@ from typing import Dict, Callable, Optional
 from .logger import get_logger
 
 # Import components with proper path handling
-try:
-    from ..components.interface_manager import InterfaceManager
-    from ..components.wordlist_manager import WordlistManager
-    from ..components.dependency_manager import DependencyManager
-    from ..components.network_scanner import NetworkScanner
-    from ..components.capture_engine import CaptureEngine
-    from ..components.password_cracker import PasswordCracker
-    from ..components.security_manager import SecurityManager
-    from ..core.performance_optimizer import get_performance_optimizer
-    from ..core.error_handler import get_error_handler
-except ImportError:
-    # Fallback for direct execution
-    sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
-    from components.interface_manager import InterfaceManager
-    from components.wordlist_manager import WordlistManager
-    from components.dependency_manager import DependencyManager
-    from components.network_scanner import NetworkScanner
-    from components.capture_engine import CaptureEngine
-    from components.password_cracker import PasswordCracker
-    from components.security_manager import SecurityManager
-    from core.performance_optimizer import get_performance_optimizer
-    from core.error_handler import get_error_handler
+import sys
+import os
+from pathlib import Path
+
+# Add project root to path
+project_root = Path(__file__).parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
+from components.interface_manager import InterfaceManager
+from components.wordlist_manager import WordlistManager
+from components.dependency_manager import DependencyManager
+from components.network_scanner import NetworkScanner
+from components.capture_engine import CaptureEngine
+from components.password_cracker import PasswordCracker
+from components.security_manager import SecurityManager
+from core.performance_optimizer import get_performance_optimizer
+from core.error_handler import get_error_handler
 
 class MenuSystem:
     """Interactive menu system for the WiFi Security Tester"""
@@ -762,6 +758,160 @@ class MenuSystem:
         except Exception as e:
             self.logger.error(f"Error optimizing wordlist: {e}")
             print(f"Ошибка оптимизации словаря / Error optimizing wordlist: {e}")
+    
+    def _dependency_management_handler(self):
+        """Handle dependency management menu option"""
+        print("\n" + "="*60)
+        print("           Проверка зависимостей / Dependency Check")
+        print("="*60)
+        
+        try:
+            # Check all dependencies
+            print("Проверка зависимостей... / Checking dependencies...")
+            status = self.dependency_manager.check_all_dependencies()
+            
+            if status['all_satisfied']:
+                print("✅ Все зависимости установлены / All dependencies satisfied")
+            else:
+                print("❌ Некоторые зависимости отсутствуют / Some dependencies missing")
+                
+                # Offer to install missing dependencies
+                print("\nОтсутствующие зависимости / Missing dependencies:")
+                for dep, info in status['dependencies'].items():
+                    if not info['available']:
+                        print(f"  - {dep}: {info['status']}")
+                
+                choice = input("\nУстановить отсутствующие зависимости? (y/n): ")
+                if choice.lower() in ['y', 'yes', 'да']:
+                    print("Установка зависимостей... / Installing dependencies...")
+                    install_result = self.dependency_manager.install_missing_dependencies()
+                    if install_result['success']:
+                        print("✅ Зависимости успешно установлены / Dependencies installed successfully")
+                    else:
+                        print(f"❌ Ошибка установки / Installation error: {install_result['error']}")
+        
+        except Exception as e:
+            print(f"Ошибка проверки зависимостей / Dependency check error: {e}")
+        
+        input("\nНажмите Enter для продолжения / Press Enter to continue...")
+    
+    def _network_scanning_handler(self):
+        """Handle network scanning menu option"""
+        print("\n" + "="*60)
+        print("           Сканирование сетей / Network Scanning")
+        print("="*60)
+        
+        try:
+            print("Сканирование WiFi сетей... / Scanning WiFi networks...")
+            networks = self.network_scanner.scan_networks()
+            
+            if networks:
+                print(f"\nНайдено сетей: {len(networks)} / Networks found: {len(networks)}")
+                print("-" * 80)
+                print(f"{'№':<3} {'SSID':<20} {'BSSID':<18} {'Ch':<3} {'Signal':<7} {'Security':<10}")
+                print("-" * 80)
+                
+                for i, network in enumerate(networks[:20], 1):  # Show first 20
+                    print(f"{i:<3} {network.ssid[:20]:<20} {network.bssid:<18} "
+                          f"{network.channel:<3} {network.signal_strength:<7} {network.encryption_type:<10}")
+                
+                if len(networks) > 20:
+                    print(f"... и еще {len(networks) - 20} сетей / ... and {len(networks) - 20} more networks")
+            else:
+                print("❌ Сети не найдены / No networks found")
+        
+        except Exception as e:
+            print(f"Ошибка сканирования / Scanning error: {e}")
+        
+        input("\nНажмите Enter для продолжения / Press Enter to continue...")
+    
+    def _packet_capture_handler(self):
+        """Handle packet capture menu option"""
+        print("\n" + "="*60)
+        print("           Захват пакетов / Packet Capture")
+        print("="*60)
+        print("Эта функция будет реализована в следующих задачах.")
+        print("This feature will be implemented in upcoming tasks.")
+        print("="*60)
+        input("\nНажмите Enter для продолжения / Press Enter to continue...")
+    
+    def _password_cracking_handler(self):
+        """Handle password cracking menu option"""
+        print("\n" + "="*60)
+        print("           Взлом паролей / Password Cracking")
+        print("="*60)
+        print("Эта функция будет реализована в следующих задачах.")
+        print("This feature will be implemented in upcoming tasks.")
+        print("="*60)
+        input("\nНажмите Enter для продолжения / Press Enter to continue...")
+    
+    def _security_settings_handler(self):
+        """Handle security settings menu option"""
+        print("\n" + "="*60)
+        print("           Настройки безопасности / Security Settings")
+        print("="*60)
+        
+        try:
+            # Check SIP status
+            sip_status = self.security_manager.check_sip_status()
+            print(f"SIP Status: {sip_status['status']}")
+            
+            if sip_status['enabled']:
+                print("⚠️  SIP включен - некоторые функции могут быть ограничены")
+                print("⚠️  SIP enabled - some features may be restricted")
+            else:
+                print("✅ SIP отключен - все функции доступны")
+                print("✅ SIP disabled - all features available")
+        
+        except Exception as e:
+            print(f"Ошибка проверки настроек / Settings check error: {e}")
+        
+        input("\nНажмите Enter для продолжения / Press Enter to continue...")
+    
+    def _performance_management_handler(self):
+        """Handle performance management menu option"""
+        print("\n" + "="*60)
+        print("           Производительность / Performance")
+        print("="*60)
+        
+        try:
+            # Get system performance info
+            print("Анализ производительности системы... / Analyzing system performance...")
+            
+            # Basic system info
+            import psutil
+            cpu_percent = psutil.cpu_percent(interval=1)
+            memory = psutil.virtual_memory()
+            
+            print(f"CPU использование / CPU usage: {cpu_percent}%")
+            print(f"Память / Memory: {memory.percent}% ({memory.used // 1024 // 1024} MB / {memory.total // 1024 // 1024} MB)")
+            
+            # Check for performance recommendations
+            if cpu_percent > 80:
+                print("⚠️  Высокая загрузка CPU / High CPU usage")
+            if memory.percent > 80:
+                print("⚠️  Высокое использование памяти / High memory usage")
+            
+            print("\n💡 Рекомендации для оптимальной производительности:")
+            print("💡 Recommendations for optimal performance:")
+            print("- Закройте ненужные приложения / Close unnecessary applications")
+            print("- Используйте SSD для лучшей производительности / Use SSD for better performance")
+            print("- Рассмотрите использование внешнего WiFi адаптера / Consider external WiFi adapter")
+            
+        except Exception as e:
+            print(f"Ошибка анализа производительности / Performance analysis error: {e}")
+        
+        input("\nНажмите Enter для продолжения / Press Enter to continue...")
+    
+    def _reports_handler(self):
+        """Handle reports menu option"""
+        print("\n" + "="*60)
+        print("           Отчеты и статистика / Reports & Statistics")
+        print("="*60)
+        print("Эта функция будет реализована в следующих задачах.")
+        print("This feature will be implemented in upcoming tasks.")
+        print("="*60)
+        input("\nНажмите Enter для продолжения / Press Enter to continue...")
     
     def _exit_handler(self):
         """Handle exit menu option"""

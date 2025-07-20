@@ -1,1 +1,1 @@
-# Components package - Main functional components
+# Components modules

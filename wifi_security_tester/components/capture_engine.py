@@ -19,8 +19,8 @@ from pathlib import Path
 from threading import Thread, Event
 import tempfile
 
-from ..core.logger import get_logger, log_operation, log_security_event
-from ..utils.common import run_command, ensure_directory, validate_file_path
+from core.logger import get_logger, log_operation, log_security_event
+from utils.common import run_command, ensure_directory, validate_file_path
 from .network_scanner import NetworkInfo
 from .interface_manager import InterfaceManager
 

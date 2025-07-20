@@ -16,13 +16,23 @@ from typing import List, Dict, Optional, Tuple
 
 # Import logger with proper path handling
 try:
-    from ..core.logger import get_logger
+    from core.logger import get_logger
 except ImportError:
     # Fallback for direct execution
     import sys
     import os
     sys.path.append(os.path.join(os.path.dirname(__file__), '..'))
     from core.logger import get_logger
+
+import sys
+import os
+from pathlib import Path
+
+# Add project root to path
+project_root = Path(__file__).parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
 
 class InterfaceManager:
     """Manages WiFi interfaces and their modes"""

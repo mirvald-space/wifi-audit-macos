@@ -20,9 +20,19 @@ from pathlib import Path
 from threading import Thread, Event
 import tempfile
 
-from ..core.logger import get_logger, log_operation, log_security_event
-from ..utils.common import run_command, ensure_directory, validate_file_path
+from core.logger import get_logger, log_operation, log_security_event
+from utils.common import run_command, ensure_directory, validate_file_path
 from .wordlist_manager import WordlistManager
+
+import sys
+import os
+from pathlib import Path
+
+# Add project root to path
+project_root = Path(__file__).parent.parent
+if str(project_root) not in sys.path:
+    sys.path.insert(0, str(project_root))
+
 
 
 @dataclass

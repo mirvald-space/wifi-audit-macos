@@ -1,1 +1,1 @@
-# Core components package
+# Core modules
