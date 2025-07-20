@@ -58,8 +58,8 @@ By using this tool, you agree to:
 
 1. **Clone the repository:**
    ```bash
-   git clone <repository-url>
-   cd wifi-security-tester
+   git clone https://github.com/mirvald-space/wifi-audit-macos.git
+   cd wifi-audit-macos
    ```
 
 2. **Run the application:**
