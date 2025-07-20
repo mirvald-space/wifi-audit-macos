@@ -1,0 +1,14 @@
+{
+  "job_id": "aircrack_1752999588",
+  "capture_file": "/var/folders/t8/4md67y9n3tngtrxlv2q4b3k00000gn/T/tmpu_66q9v7/test.cap",
+  "wordlist_file": "/var/folders/t8/4md67y9n3tngtrxlv2q4b3k00000gn/T/tmpu_66q9v7/test_wordlist.txt",
+  "method": "aircrack",
+  "start_time": "2025-07-20T10:19:48.113263",
+  "estimated_time": 0,
+  "progress_percentage": 100.0,
+  "keys_per_second": 0,
+  "result": null,
+  "status": "running",
+  "end_time": "2025-07-20T10:23:51.463076",
+  "error_message": null
+}

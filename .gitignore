@@ -1,0 +1,48 @@
+.kiro
+logs
+
+# WiFi Security Tester logs
+wifi_security_tester/logs/
+*.log
+wifi_security_tester_*.log
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+*.so
+
+# Virtual environments
+venv/
+env/
+ENV/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Temporary files
+*.tmp
+*.temp
+temp/
+tmp/
+
+# Test results and coverage
+.coverage
+htmlcov/
+.pytest_cache/
+.tox/
+
+# WiFi Security Tester specific
+wifi_security_tester/wordlists/*.txt
+wifi_security_tester/results/
+*.cap
+*.pcap
